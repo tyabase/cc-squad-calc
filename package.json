@@ -29,7 +29,7 @@
     "mapinfo": "node src/data/maps.js mapinfo"
   },
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
