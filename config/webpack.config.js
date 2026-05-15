@@ -70,6 +70,9 @@ export default async (env) => {
         },
         plugins: [
             new Dotenv(),
+            new webpack.DefinePlugin({
+                'process.env.API_URL': JSON.stringify(process.env.API_URL || 'https://squadcalc.app/api'),
+            }),
             new HtmlWebpackPlugin({
                 template: './src/index.html',
                 minify: env.WEBPACK_BUILD ? {
