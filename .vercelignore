@@ -2,7 +2,6 @@
 .git/
 node_modules/
 src/
-config/
 .github/
 *.md
 .env
