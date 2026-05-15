@@ -1,7 +1,6 @@
 # 排除不需要的文件
 .git/
 node_modules/
-src/
 .github/
 *.md
 .env
