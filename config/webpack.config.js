@@ -165,13 +165,12 @@ function preChecks(dotenv, env, DEV_SERVER_AUTO_OPEN, SEARCH_ENGINES, SMO_WEBSOC
     console.log(`                           https://squadcalc.app`)
     console.log("*****************************************************\n")
 
+    // Use default .env if not found (for Vercel/Production builds)
     if (dotenv.error) {
-        console.error("    -> NO .ENV CONFIGURATION FOUND IN ROOT FOLDER ❌")
-        console.error("    -> see https://github.com/sh4rkman/SquadCalc/wiki/Installation-&-Configuration#optional-configuration\n\n");
-        process.exit(1);
+        console.log("    -> Using default configuration (Vercel/Production build) ✅")
+    } else {
+        console.log(`    -> Found .env file ✅ !`)
     }
-
-    console.log(`    -> Found .env file ✅ !`)
     console.log(`      -> SquadMortarOverlay Support : ${SMO_WEBSOCKET ? '✅' : '❌'}`)
     console.log(`      -> Index on search engines : ${SEARCH_ENGINES ? '✅' : '❌'}`)
     if (!env.WEBPACK_BUILD) console.log(`      -> URL will be http://localhost:${process.env.DEV_SERVER_PORT || 3000} ✅`)
@@ -183,10 +182,9 @@ function preChecks(dotenv, env, DEV_SERVER_AUTO_OPEN, SEARCH_ENGINES, SMO_WEBSOC
         console.log(`      -> API used : ${process.env.API_URL} ✅`);
     }
     else {
-        console.error("      -> NO API URL FOUND IN .ENV ❌");
-        console.error("      -> Check if a .env file exists and if API_URL is defined\n\n");
-        process.exit(1);
+        // Use default API URL for production builds
+        console.log(`      -> API used : https://squadcalc.app/api (default) ✅`);
     }
-    if (!env.WEBPACK_BUILD) console.log(`      -> Should dev server open in a new Tab ? ${DEV_SERVER_AUTO_OPEN ? "✅" : "❌"}`);
+    if (!env.WEBPACK_BUILD) console.log(`      -> Should dev server open in a new Tab ? ${DEV_SERVER_AUTO_OPEN ? "✅" : '❌'}`);
     console.log(`    -> ${env.WEBPACK_BUILD ? 'Building /dist/ folder...\n' : 'Launching dev server...\n'}`)
 }

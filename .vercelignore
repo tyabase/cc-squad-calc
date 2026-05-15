@@ -6,4 +6,5 @@ src/
 *.md
 .env
 .env.*
+!.env.example
 !.env.template
