@@ -10,6 +10,9 @@ function parseHtmlTable(html: string): ServerRow[] {
   // 匹配表格行的正则表达式
   const rowRegex = /\|([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)\|/g
   
+  // 检查是否包含中文字符的正则表达式
+  const chineseRegex = /[\u4e00-\u9fff]/
+  
   let match
   while ((match = rowRegex.exec(html)) !== null) {
     const name = match[1].trim()
@@ -18,6 +21,11 @@ function parseHtmlTable(html: string): ServerRow[] {
     
     // 跳过表头
     if (name.includes("服务器名") || name.includes("地图") || name.includes("模式")) {
+      continue
+    }
+    
+    // 只保留含有中文字符的服务器
+    if (!chineseRegex.test(name)) {
       continue
     }
     
