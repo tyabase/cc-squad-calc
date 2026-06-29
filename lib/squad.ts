@@ -1,17 +1,34 @@
+export type RawServerDetails = {
+  SERVERNAME_s?: string
+  MAPNAME_s?: string
+  PLAYERCOUNT_l?: number
+  PLAYTIME_l?: number
+  GAMEMODE_s?: string
+  TEAMONE_s?: string
+  TEAMTWO_s?: string
+  GAMEMODE_s?: string
+  NEXTLAYER_s?: string
+  [key: string]: any
+}
+
 export type RawServer = {
-  game_version: string
-  is_bot: boolean
-  is_clone: boolean
-  is_ghost: boolean
-  list_players: number
-  map_name: string
-  max_players: number | null
-  public_queue: number
-  real_players: number
-  server_name: string
-  team_one: string
-  team_two: string
-  uptime_sec: number
+  followId: string
+  name: string
+  players: number
+  maxPlayers: number
+  status: string
+  country: string
+  currentLayerRaw: string
+  gameMode: string
+  parsedMapName: string | null
+  layerVersion: string | null
+  teamOneShort: string
+  teamTwoShort: string
+  nextLayer: string
+  sourceUpdatedAt: string | null
+  details: RawServerDetails
+  createdAt: string
+  updatedAt: string
 }
 
 export type ServerRow = {
@@ -81,12 +98,12 @@ export function formatUptime(sec: number): string {
 
 export function normalizeServers(raw: RawServer[]): ServerRow[] {
   return raw.map((s, i) => ({
-    id: `${i}-${s.server_name}`,
-    name: s.server_name?.trim() || "(未命名服务器)",
-    map: translateMap(s.map_name),
-    players: s.real_players ?? 0,
-    maxPlayers: s.max_players ?? 100,
-    uptimeSec: s.uptime_sec ?? 0,
-    isBot: Boolean(s.is_bot),
+    id: `${i}-${s.followId || s.name}`,
+    name: s.name?.trim() || "(未命名服务器)",
+    map: translateMap(s.parsedMapName || s.currentLayerRaw || s.details?.MAPNAME_s || ""),
+    players: s.players ?? s.details?.PLAYERCOUNT_l ?? 0,
+    maxPlayers: s.maxPlayers ?? 100,
+    uptimeSec: s.details?.PLAYTIME_l ?? 0,
+    isBot: false,
   }))
 }
