@@ -25,16 +25,9 @@ export function ServerListView({ initialData, error }: { initialData: InitialDat
     )
   }
 
-  const soarServer = initialData.servers.find(s => s.name.toUpperCase().includes("SOAR"))
-  const otherServers = initialData.servers.filter(s => !s.name.toUpperCase().includes("SOAR"))
-
-  const visibleOtherServers = showEmpty
-    ? otherServers
-    : otherServers.filter((s) => s.players > 0)
-
-  const allVisibleServers = soarServer 
-    ? [soarServer, ...visibleOtherServers]
-    : visibleOtherServers
+  const visibleServers = showEmpty
+    ? initialData.servers
+    : initialData.servers.filter((s) => s.players > 0)
 
   return (
     <section className="mx-auto max-w-[1400px] px-4 pb-16 md:px-6">
@@ -55,21 +48,12 @@ export function ServerListView({ initialData, error }: { initialData: InitialDat
         </label>
       </div>
 
-      {allVisibleServers.length === 0 ? (
+      {visibleServers.length === 0 ? (
         <div className="rounded-xl border border-border bg-card px-6 py-16 text-center text-sm text-muted-foreground">
           当前没有在线玩家的服务器，勾选「显示空服务器」查看全部。
         </div>
       ) : (
-        <>
-          {soarServer && (
-            <>
-              <h2 className="mb-3 text-lg font-semibold text-foreground">C.C.社区常驻服务器</h2>
-              <ServerTable servers={[soarServer]} />
-              <h2 className="mt-6 mb-3 text-lg font-semibold text-foreground">其他服务器</h2>
-            </>
-          )}
-          <ServerTable servers={visibleOtherServers} />
-        </>
+        <ServerTable servers={visibleServers} />
       )}
 
       <p className="mt-4 text-center text-xs text-muted-foreground/70">
